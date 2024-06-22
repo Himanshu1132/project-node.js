@@ -1,0 +1,20 @@
+// src/controllers/candidateController.js
+const { Candidate } = require("../models");
+
+exports.addCandidate = async (req, res) => {
+  const { first_name, last_name, email } = req.body;
+  const candidate = await Candidate.create({
+    first_name,
+    last_name,
+    email,
+    user_id: req.user.id,
+  });
+  res.status(201).json({ message: "Candidate added successfully", candidate });
+};
+
+exports.getCandidates = async (req, res) => {
+  const candidates = await Candidate.findAll({
+    where: { user_id: req.user.id },
+  });
+  res.status(200).json({ candidates });
+};

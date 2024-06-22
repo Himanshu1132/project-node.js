@@ -1,0 +1,13 @@
+// src/routes/publicRoutes.js
+const express = require("express");
+const {
+  getUserProfile,
+  getCandidates,
+} = require("../controllers/publicController");
+const { apiKeyMiddleware } = require("../middleware/apiKeyMiddleware");
+const router = express.Router();
+
+router.post("/public/profile", apiKeyMiddleware, getUserProfile);
+router.get("/public/candidate", apiKeyMiddleware, getCandidates);
+
+module.exports = router;

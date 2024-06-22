@@ -1,0 +1,13 @@
+// src/middleware/apiKeyMiddleware.js
+const { ApiKey } = require("../models");
+
+exports.apiKeyMiddleware = async (req, res, next) => {
+  const apiKey = req.headers["x-api-key"];
+  if (!apiKey) return res.status(401).json({ message: "API key is missing" });
+
+  const keyRecord = await ApiKey.findOne({ where: { key: apiKey } });
+  if (!keyRecord) return res.status(401).json({ message: "Invalid API key" });
+
+  req.userId = keyRecord.user_id;
+  next();
+};
